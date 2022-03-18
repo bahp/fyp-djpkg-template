@@ -33,7 +33,11 @@ RUN python manage.py collectstatic --noinput
 # quick log to see it was executed
 RUN echo '[bahp] Dockerfile executed.'
 
-USER bahp
+#USER bahp
+
+# add and run as non-root user
+#RUN adduser -D myuser
+#USER myuser
 
 # run entrypoint.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
