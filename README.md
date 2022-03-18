@@ -20,3 +20,4 @@ $ heroku stack:set container
 $ heroku stack:set Heroku-20
 
 https://devcenter.heroku.com/articles/python-gunicorn
+https://www.codingforentrepreneurs.com/blog/django-docker-production-heroku/

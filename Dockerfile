@@ -40,6 +40,6 @@ RUN echo '[bahp] Dockerfile executed.'
 #USER myuser
 
 # run entrypoint.sh
-ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+#ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
 
-#CMD gunicorn hello_django.wsgi:application --bind 0.0.0.0:$PORT
+CMD gunicorn portfolio.wsgi:application --bind 0.0.0.0:$PORT
