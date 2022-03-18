@@ -9,3 +9,6 @@ Then added gunicorn and SETTINGS config str()
 
 
 https://docs.docker.com/samples/django/
+
+
+The entrypoint.sh needs to have LF ending. Easy to change with py charm
