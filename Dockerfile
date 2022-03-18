@@ -9,6 +9,8 @@ COPY . /code/
 # collect static files
 RUN python manage.py collectstatic --noinput
 
+RUN echo 'Dockerfile completed!'
+
 # add and run as non-root user
-RUN adduser -D myuser
-USER myuser
+#RUN adduser -D myuser
+#USER myuser
