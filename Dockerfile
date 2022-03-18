@@ -1,10 +1,10 @@
 FROM python:3
 
-
-
-RUN groupadd --gid 5000 newuser \
-    && useradd --home-dir /home/newuser --create-home --uid 5000 \
-        --gid 5000 --shell /bin/sh --skel /dev/null newuser
+# .. note: can this be simplified?
+# add non root user
+RUN groupadd --gid 5000 bahp \
+    && useradd --home-dir /home/bahp --create-home --uid 5000 \
+        --gid 5000 --shell /bin/sh --skel /dev/null bahp
 
 # set work directory
 WORKDIR /usr/src/app
@@ -33,9 +33,7 @@ RUN python manage.py collectstatic --noinput
 # quick log to see it was executed
 RUN echo '[bahp] Dockerfile executed.'
 
-# add and run as non-root user
-#RUN useradd -u 9999 bahp
-USER newuser
+USER bahp
 
 # run entrypoint.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
