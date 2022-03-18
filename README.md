@@ -12,3 +12,9 @@ https://docs.docker.com/samples/django/
 
 
 The entrypoint.sh needs to have LF ending. Easy to change with py charm
+
+
+# To use heroku.yml
+
+$ heroku stack:set container
+$ heroku stack:set Heroku-20
