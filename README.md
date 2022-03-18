@@ -18,3 +18,5 @@ The entrypoint.sh needs to have LF ending. Easy to change with py charm
 
 $ heroku stack:set container
 $ heroku stack:set Heroku-20
+
+https://devcenter.heroku.com/articles/python-gunicorn
