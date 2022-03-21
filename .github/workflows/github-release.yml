@@ -1,0 +1,84 @@
+name: GitHub Release
+
+on:
+
+  # Basic
+  #push:
+  #  branches: [ master ]  # Exclude develop!
+  #pull_request:
+  #  branches: [ master ]  # Exclude develop!
+
+  # Release
+  #release:
+  #  types: [created]   # Default
+  #  types: [published] # Recommended
+
+  # Based on previous execution
+  workflow_run:
+    workflows: ["Python package"]
+    types:
+      - completed
+
+
+jobs:
+
+  build-wheel:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+    # Basic
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+
+    # Install dependencies
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        #pip install setuptools wheel twine
+
+    # Build distribution
+    - name: Build distribution
+      run: |
+        python setup.py sdist #bdist_wheel
+
+    #- name: Upload distribution artifact
+    #  uses: actions/upload-artifact@v2
+    #  with:
+    #    name: static-site
+    #    path: ./dist/
+
+    # Set package variables
+    - name: Set package variables
+      run: |
+        echo "FULLNAME=$(python setup.py --fullname)" >> $GITHUB_ENV
+        echo "VERSION=$(python setup.py --version)" >> $GITHUB_ENV
+
+    # Create github release
+    # .. note: run number as ${{ github.run_number }}
+    - name: Create GitHub release
+      id: create-new-release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ env.VERSION }}
+        release_name: Release v${{ env.VERSION }}
+
+    # Upload release asset
+    - name: Upload GitHub release asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create-new-release.outputs.upload_url }}
+        asset_path: ./epicimpoc/dist/${{ env.FULLNAME }}.tar.gz
+        asset_name: ${{ env.FULLNAME }}.tar.gz
+        asset_content_type: application/gzip
+
+    # - name: Publish package
+    #  env:
+    #    TWINE_USERNAME: __token__
+    #    TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+    #  run: |
+    #    python setup.py sdist bdist_wheel
+    #    twine upload dist/*
