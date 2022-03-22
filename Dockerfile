@@ -42,4 +42,4 @@ RUN echo '[bahp] Dockerfile executed.'
 # run entrypoint.sh
 #ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
 
-CMD gunicorn portfolio.wsgi:application --bind 0.0.0.0:$PORT
+#CMD gunicorn portfolio.wsgi:application --bind 0.0.0.0:$PORT
